@@ -1,12 +1,15 @@
-int index = 0;
 
 typedef struct Stack{
-    double* buffer;
+    double* start;
     int capacity;
-    int index;
+    int pointer;
 } Stack;
 
-void push();
-double get();
-double* create_stack();
-void delete_stack();
+void StackPush(Stack*, double);
+double StackPop(Stack*);
+
+Stack* StackCtor(int);
+void StackDelete(Stack*);
+
+void StackIncrease(Stack*);
+void StackDecrease(Stack*);

@@ -1,51 +1,64 @@
 #include "stack.h"
-#include<malloc.h>
+#include <malloc.h>
+#include <stdio.h>
 
-void push(double element, Stack* stack)
+
+void StackPush(Stack* stack, double element)
 {
-    stack->buffer[stack->index] = element;
-    stack->index ++;
+    *(stack->start + stack->pointer) = element;
+    stack->pointer += 1;
 
-    increase_stack(stack);
 }
 
-double get(Stack* stack)
+//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+double StackPop(Stack* stack)
 {   
     double element = 0;
 
-    stack->index--;
-    element = stack->buffer[stack->index];
-    stack->buffer[stack->index] = 0;
-
-    decrease_stack(stack);
+    stack->pointer -= 1;
+    element = *(stack->start + stack->pointer);
+    *(stack->start + stack->pointer) = 0;
 
     return element;
 }
 
-Stack* create_stack(int size)
-{
-    Stack* stack = calloc(size, sizeof(double));
+//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Stack* StackCtor(int size)
+{   
+    Stack* stack = (Stack*) calloc(1, sizeof(Stack));
+    stack->start = (double*) calloc(size, sizeof(double));
+    stack->pointer = 0;
+    stack->capacity = size;
+
     return stack;
 }
 
-void delete_stack(Stack* stack)
+//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+void StackDelete(Stack* stack)
 {
     free(stack);
 }
 
-void increase_stack(Stack* stack)
+//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+void StackIncrease(Stack* stack)
 {
-    if(stack->index + 1 > stack->capacity)
+    if(stack->pointer + 1 > stack->capacity)
     {
-        stack->buffer = realloc(stack->buffer, 2 * stack->capacity * sizeof(Stack));
+        stack->start = realloc(stack->start, 2 * stack->capacity * sizeof(Stack));
         stack->capacity = 2*stack->capacity; 
     }
 }
 
-void decrease_stack(Stack* stack)
+//flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+void StackDecrease(Stack* stack)
 {
-    if( 2 * (stack->index - 1) < stack->capacity)
-        stack->buffer = realloc(stack->buffer, 
+    if( 2 * (stack->pointer - 1) < stack->capacity)
+        stack->start = realloc(stack->start, 
             (2/3 + 1) * stack->capacity * sizeof(Stack));
         
         stack->capacity = stack->capacity / 3 * 2 + 1;
