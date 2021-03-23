@@ -36,11 +36,11 @@ Node* Ctor()
 
 Node* DCtor(Node *head)
 {   
-    Node * prev;
+    Node* prev;
     while (head)
     {   
-        prev = (*head);
-        head = head->next
+        prev = (head);
+        head = head->next;
         free(prev);
     }
     
