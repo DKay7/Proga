@@ -24,7 +24,7 @@ int main()
 
 Node* Ctor()
 {
-    Node *tmp = (Node*)malloc(sizeof(Node));
+    Node *tmp = (Node*) malloc(sizeof(Node));
 
     if (tmp == NULL)
     {
@@ -114,7 +114,7 @@ void countOddPos(Node **head, int num_pos)
 
     for (i; i < num_pos, head != NULL; i++, head = (*head)->next)
     {
-        val = get_last_val(head);
+        val = getLastVal(head);
 
         if (val == 0)
         {
