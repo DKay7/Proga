@@ -8,17 +8,21 @@ typedef struct Node {
 
 Node *head = NULL;
 
+Node* Ctor();
+int push(Node **, int);
+int pop(Node **);
+void print(Node *);
+void input(Node **);
+void changeEven(Node *, Node *, int);
+void countOddPos(Node **, int );
+int countSize(Node **);
 
-int push(Node**, int);
-int pop(Node**);
-void print(Node*);
-void input(Node**);
 
 int main() 
 {
 }
 
-int push(Node **head, int data)
+Node* Ctor()
 {
     Node *tmp = (Node*)malloc(sizeof(Node));
 
@@ -27,6 +31,25 @@ int push(Node **head, int data)
         return -1;
     }
 
+    return tmp;
+}
+
+Node* DCtor(Node *head)
+{   
+    Node * prev;
+    while (head)
+    {   
+        prev = (*head);
+        head = head->next
+        free(prev);
+    }
+    
+}
+
+int push(Node **head, int data)
+{
+    
+    Node *tmp = Ctor();
     tmp->value = data;
     tmp->next = (*head);
     (*head) = tmp;
@@ -122,10 +145,11 @@ void changeEven(Node *head1, Node *head2, int num_pos)
     int size = countSize(&head1);
     for (i; i < size - num_pos; i++)
     {
-
+        head1 = head1->next;
+        head2 = head2->next;
     }
-    
-    for (i = num_pos; i >= size; i--)
+
+    for (i = num_pos; i < size; i++)
     {   
         if (i % 2 == 0)
         {
@@ -139,6 +163,4 @@ void changeEven(Node *head1, Node *head2, int num_pos)
         head1 = head1->next;
         head2 = head2->next;
     }
-
-    return count;
 }
