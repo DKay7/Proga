@@ -1,51 +1,50 @@
-#include <stdio.h>
+#include <stdio.h> 
+#include <string.h> 
+#define size 1000
 
+int main() 
+{ 
+    int counter = 0, res = 0; 
+    char array[size];
+    int i = 0;
+    int len;
+    int last_sym = 0;
 
-int main ()
-{      
-    const int m = 100;
-    char buffer[m];
-    char next_chr;
-    int i = 0, j = 0, len;
-    int counter = 0;
-    int words = 0;
+    printf("Enter the string: "); 
 
-    scanf("%c", &next_chr);
-
-    while (next_chr != '\n' && i < m)
+    while((array[i] = getchar()) != EOF)
     {
-        buffer[i] = next_chr; 
-        scanf("%c", &next_chr);
         i += 1;
     }
-
-    len = i;
-
-    for (i = 0; i < len; i++)
-    {
-        if(buffer[i] != ' ')
-        {
-            for (j=i+1; buffer[j] != ' '; j++)
-            {
-                if (buffer[i] == buffer[j] /*&& j != i*/)
-                {
-                    counter += 1;
-                }
-            }
-        }
-
-        else 
-        {
-            if (counter == 0)
-            {
-                words += 1;
-            }
-
-            counter = 0;
-        }
+    
+    len = i - 1;
+    printf("\n\n");
+    for (i = 0; i<len; i++)
+        printf("%c", array[i]);
         
+    
+
+    for (int i = 0; array[i] != EOF; i++) 
+    {  
+
+        if (array[i] != ' ' && array[i] != '\n') 
+        {   
+            last_sym = 1;
+
+            for (int j = i;  j < len && array[j] != '\n' && array[j] != ' '; j++) 
+            { 
+                if (array[i] == array[j] && i != j) counter++; 
+            }
+        }
+
+        if (last_sym != 0 && (array[i] == ' ' || array[i] == EOF || array[i] == '\n'))
+        {   
+            last_sym = 0;
+            if (counter == 0) res++; 
+            counter = 0; 
+        }
     }
 
-    printf("%d\n", words);
-    return 0;
+    printf("\n%d\n", res); 
+    return 0; 
 }
