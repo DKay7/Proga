@@ -23,14 +23,14 @@ typedef struct Stack{
 
 enum ExitCodes
 {
-    FINE                        = 0x000000, //If all is OK
-    MEMORY_ALLOC_ERROR          = 0xA10000, //Error while allocation memory in functions calloc/realloc
-    INCORRECT_STACK_POINTER     = 0xB10000, //Incorrect pointer to start of stack buffer
-    INCORRECT_STACK_SIZE        = 0xB20000, //Size below zero or size more than capacity
-    INCORRCT_STACK_CAPACITY     = 0xB30000, //Capacity below zero
-    WRONG_START_HUMMINGBIRD     = 0xE10000, //Changes in start-hummingbird
-    WRONG_END_HUMMINGBIRD       = 0xE20000, //Changes in end-hummingbird
-    WRONG_HASH_SUM              = 0xE30000  //Mismath with recorded hash-sum
+    FINE                        = 0x000000,     //  If all is OK
+    MEMORY_ALLOC_ERROR          = 0xA10000,     //  Error while allocation memory in functions calloc/realloc
+    INCORRECT_STACK_POINTER     = 0xB10000,     //  Incorrect pointer to start of stack buffer
+    INCORRECT_STACK_SIZE        = 0xB20000,     //  Size below zero or size more than capacity
+    INCORRCT_STACK_CAPACITY     = 0xB30000,     //  Capacity below zero
+    WRONG_START_HUMMINGBIRD     = 0xE10000,     //  Changes in start-hummingbird
+    WRONG_END_HUMMINGBIRD       = 0xE20000,     //  Changes in end-hummingbird
+    WRONG_HASH_SUM              = 0xE30000      //  Mismath with recorded hash-sum
 };
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
