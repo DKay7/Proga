@@ -70,7 +70,7 @@ Poly* substract(Poly* p, Poly* q)
     return p;
 }
 
-Poly* get_halves(Poly* p)
+Poly** get_halves(Poly* p)
 {   
     assert(p != NULL);
 
@@ -103,6 +103,15 @@ Poly* get_halves(Poly* p)
     return result;
 }
 
+Poly* unite(Poly* ac, Poly* ad_bc, Poly* bd, len_type p_len, len_type q_len)
+{   
+    assert(ac != NULL);
+    assert(ad_bc != NULL);
+    assert(bd != NULL);
+
+    len_type new_ac_len = 
+}
+
 Poly* karatsuba(Poly* p, Poly* q)
 {   
     // Take halfes a,b  = x
@@ -115,11 +124,38 @@ Poly* karatsuba(Poly* p, Poly* q)
     assert(p != NULL);
     assert(q != NULL);
 
-    Poly* halves_p = get_halves(p);
+    if(p->len < 2)
+    {   
+        int i = 0;
+        len_type shortest_len = shortest(p, q);
+
+        for(i; i < shortest_len; i++)
+        {
+            p->coeffs[0] *= q->coeffs[0];
+        }
+
+        return p;
+    }
+
+    Poly** halves_p = get_halves(p);
     Poly* a = halves_p[0];
     Poly* b = halves_p[1];
 
-    Poly* halves_q = get_halves(q);
+    Poly** halves_q = get_halves(q);
     Poly* c = halves_q[0];
     Poly* d = halves_q[1];
+
+    Poly* n = sum(a, b);
+    Poly* m = sum(c, d);
+
+    Poly* nm = karatsuba(n, m);
+    Poly* ac = karatsuba(a, c);
+    Poly* bd = karatsuba(b, d);
+
+    Poly* tmp = substract(nm, ac);
+    Poly* ad_bc = substract(tmp, bd);
+
+    Poly result = unite(ac, ad_bc, bd, p->len, q->len);
+
+
 }
