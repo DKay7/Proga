@@ -32,20 +32,20 @@ void QueuePush(Queue* queue, queue_type data)
     
     QNode* new_node = (QNode*) calloc(1, sizeof(QNode));
 
-    if (new_node == NULL)
+    if (!new_node)
     {
         queue_exit_code = MEMORY_ALLOC_ERROR + QUEUE_PUSH_CODE;
         return;
     }
 
-    if (queue->head != NULL and queue->tail != NULL)
+    if (queue->head and queue->tail)
     {   
         queue->tail->next = new_node;
         new_node->prev = queue->tail;
         queue->tail = new_node;
     }
 
-    else if (queue->head == NULL)
+    else if (!queue->head)
     {
         queue->head = new_node;
         queue->tail = new_node;
@@ -66,7 +66,7 @@ queue_type QueuePop(Queue* queue)
     queue_type data = 0;
 
 
-    if (queue->head != NULL)
+    if (queue->head)
     {   
         QNode* node_to_pop = queue->head;
         data = node_to_pop->data;
@@ -138,13 +138,14 @@ int QueueDumpFunction(Queue* queue, const char* func_name, int line_number, cons
 
     QNode* node = queue->head;
     size_t i = 0;
-    while(node != NULL)
+    while(node)
     {
         printf ("   ");      
         printf ("\t  ");
 
         printf  ("[%lu] = %lg \n", i, node->data);
-        node = node->next; 
+        node = node->next;
+        i += 1;
     }
 
     printf ("\t}\n}\n"); 
@@ -162,7 +163,7 @@ unsigned long long HashSum(Queue* queue)
 
     QNode* node = queue->head;
 
-    while (node != NULL)
+    while (node)
     {
         hash += node->data;
         hash << sizeof(queue_type);
