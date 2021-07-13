@@ -13,7 +13,7 @@ Stack *StackCtor(int size)
     assert(size > 0);
     
     Stack *stack = (Stack*) calloc(1, sizeof(Stack));
-    double* tmp_start = (double*) calloc(size, sizeof(double));
+    stack_type* tmp_start = (stack_type*) calloc(size, sizeof(stack_type));
 
     if(stack == NULL or tmp_start == NULL)
     {
@@ -33,7 +33,7 @@ Stack *StackCtor(int size)
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-void StackPush(Stack *stack, double element)
+void StackPush(Stack *stack, stack_type element)
 {   
     assert(stack != NULL);
 
@@ -49,11 +49,11 @@ void StackPush(Stack *stack, double element)
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-double StackPop(Stack *stack)
+stack_type StackPop(Stack *stack)
 {    
     assert(stack != NULL);
 
-    double element = 0;
+    stack_type element = 0;
 
     if (stack->pointer >= 1)
     {
@@ -75,12 +75,12 @@ int StackIncrease(Stack *stack)
 {   
     assert(stack != NULL);
 
-    double* tmp_start;
+    stack_type* tmp_start;
     
     if(stack->pointer + 1 > stack->capacity)
     {
 
-        tmp_start = (double*) realloc(stack->start, 2 * stack->capacity * sizeof(Stack));
+        tmp_start = (stack_type*) realloc(stack->start, 2 * stack->capacity * sizeof(Stack));
 
         if(tmp_start == NULL){
             stack_exit_code = MEMORY_ALLOC_ERROR + STACK_INCREASE_CODE;
@@ -99,11 +99,11 @@ int StackDecrease(Stack *stack)
 {   
     assert(stack != NULL);
 
-    double *tmp_start;
+    stack_type *tmp_start;
 
     if( 2 * (stack->pointer - 1) < stack->capacity)
     {
-        tmp_start = (double*) realloc(stack->start, 
+        tmp_start = (stack_type*) realloc(stack->start, 
                                             (2/3 + 1) * 
                                             stack->capacity * 
                                             sizeof(Stack));
@@ -226,7 +226,7 @@ unsigned long long HashSum(Stack* stack)
     for (unsigned i=0; i < stack->pointer; i++)
     {
         hash += *(stack->start + i);
-        hash << sizeof(double);
+        hash << sizeof(stack_type);
     }
 
     return hash;
@@ -235,7 +235,7 @@ unsigned long long HashSum(Stack* stack)
 void StackPrintExitCode ()
 {   
     int func_code = stack_exit_code % 256;
-    int err_code = stack_exit_code / 256 * 256;
+    int err_code = stack_exit_code - func_code;
     
     if (err_code == FINE)
     {
