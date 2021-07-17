@@ -2,7 +2,7 @@
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-int graph_exit_code = FINE;
+int graph_exit_code = GRAPH_FINE;
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -15,7 +15,7 @@ Graph* GraphCtor (int size, node_data_type* nodes_data)
 
     if (graph == NULL or tmp_adj_list == NULL)
     {
-        graph_exit_code = MEMORY_ALLOC_ERROR + GRAPH_CTOR_CODE;
+        graph_exit_code = GRAPH_MEMORY_ALLOC_ERROR + GRAPH_CTOR_CODE;
         return NULL;
     }
 
@@ -42,13 +42,14 @@ GraphNode* GraphNodeCtor (int node_num, node_data_type data)
 
     if (node == NULL)
     {
-        graph_exit_code = MEMORY_ALLOC_ERROR + GRAPH_NODE_CTOR_CODE;
+        graph_exit_code = GRAPH_MEMORY_ALLOC_ERROR + GRAPH_NODE_CTOR_CODE;
         return NULL;
     }
 
     node->node_num = node_num;
     node->data = data;
-
+    node->is_discovered = -1;
+    
     return node;
 }
 
@@ -60,7 +61,7 @@ LinkedListNode* LLNodeCtor (GraphNode* grpah_node)
 
     if (ll_node == NULL)
     {
-        graph_exit_code = MEMORY_ALLOC_ERROR + GRAPH_LL_NODE_CTOR_CODE;
+        graph_exit_code = GRAPH_MEMORY_ALLOC_ERROR + GRAPH_LL_NODE_CTOR_CODE;
         return NULL;
     }
 
@@ -100,7 +101,7 @@ void GraphFromFile (Graph* graph, char* filename)
 
     if (file == NULL)
     {
-        graph_exit_code = MEMORY_ALLOC_ERROR + GRAPH_LL_NODE_CTOR_CODE;
+        graph_exit_code = GRAPH_MEMORY_ALLOC_ERROR + GRAPH_LL_NODE_CTOR_CODE;
         return;
     }
 
@@ -129,7 +130,7 @@ void GraphToDotFile (Graph* graph, char* filename)
 
     if (file == NULL)
     {
-        graph_exit_code = MEMORY_ALLOC_ERROR + GRAPH_LL_NODE_CTOR_CODE;
+        graph_exit_code = GRAPH_MEMORY_ALLOC_ERROR + GRAPH_LL_NODE_CTOR_CODE;
         return;
     }
 
@@ -138,11 +139,22 @@ void GraphToDotFile (Graph* graph, char* filename)
     for(int i = 0; i < graph->size; i++)
     {   
         LinkedListNode* ll_node = graph->adjlist[i];
-        fprintf  (file, "\"Num: %d\nData: %d\" -> {", ll_node->node->node_num, ll_node->node->data);
+        GraphNode* g_node = ll_node->node;
+        fprintf  (file, "%d [label=\"Num: %d\\nData: %d\\nDiscovered: %d\"];\n", g_node->node_num, \
+                 g_node->node_num, g_node->data, g_node->is_discovered);
+
+    }
+
+    for(int i = 0; i < graph->size; i++)
+    {   
+        LinkedListNode* ll_node = graph->adjlist[i];
+        GraphNode* g_node = ll_node->node;
+        fprintf  (file, "%d -> {", g_node->node_num);
         while(ll_node->next != NULL)
         {   
             ll_node = ll_node->next;
-            fprintf (file, "\"Num: %d\nData: %d\" ", ll_node->node->node_num, ll_node->node->data);
+            g_node = ll_node->node;
+            fprintf (file, "%d ", g_node->node_num);
         }
 
         fprintf(file, "};\n");
@@ -158,7 +170,7 @@ void GraphToDotFile (Graph* graph, char* filename)
 int GraphDumpFunction(Graph* graph, const char* func_name, int line_number, const char* file_name, const char *graph_name)
 {      
     int err_code = graph_exit_code / 256 * 256;
-    int check = (err_code == FINE);
+    int check = (err_code == GRAPH_FINE);
 
     if (check)
     {
@@ -187,11 +199,11 @@ int GraphDumpFunction(Graph* graph, const char* func_name, int line_number, cons
     for(int i = 0; i < graph->size; i++)
     {   
         LinkedListNode* ll_node = graph->adjlist[i];
-        printf  ("\t\t[%d]", ll_node->node->node_num);
+        printf  ("\t\t[%d][%d]: (%d) ", ll_node->node->node_num, ll_node->node->data, ll_node->node->is_discovered);
         while(ll_node->next != NULL)
         {   
             ll_node = ll_node->next;
-            printf (" -> %d", ll_node->node->node_num);
+            printf (" -> [%d][%d]: (%d) ", ll_node->node->node_num, ll_node->node->data, ll_node->node->is_discovered);
         }
 
         printf("\n");
@@ -209,7 +221,7 @@ void GraphPrintExitCode ()
     int func_code = graph_exit_code % 256;
     int err_code = graph_exit_code / 256 * 256;
     
-    if (err_code == FINE)
+    if (err_code == GRAPH_FINE)
     {
         printf ("No errors found\n");
         return;
@@ -217,7 +229,7 @@ void GraphPrintExitCode ()
 
     switch (err_code)
     {
-        case MEMORY_ALLOC_ERROR:
+        case GRAPH_MEMORY_ALLOC_ERROR:
             printf ("Memory allocation error in ");
             break;
 
@@ -281,7 +293,7 @@ void DrawGraph(Graph* graph, char* filename)
 
 }
 
-void UnitTest ()
+void GraphUnitTest ()
 {   
     const int graph1_size = 12;
     const int graph2_size = 5;

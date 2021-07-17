@@ -16,7 +16,7 @@ Queue* QueueCtor()
 
     if(queue == NULL)
     {
-        queue_exit_code = MEMORY_ALLOC_ERROR + QUEUE_CTOR_CODE;
+        queue_exit_code = QUEUE_MEMORY_ALLOC_ERROR + QUEUE_CTOR_CODE;
         return NULL;
     }
 
@@ -40,7 +40,7 @@ void QueuePush(Queue* queue, queue_type data)
 
     if (!new_node)
     {
-        queue_exit_code = MEMORY_ALLOC_ERROR + QUEUE_PUSH_CODE;
+        queue_exit_code = QUEUE_MEMORY_ALLOC_ERROR + QUEUE_PUSH_CODE;
         return;
     }
 
@@ -91,19 +91,19 @@ int QueueValidity(Queue* queue, const int func_code)
 {
     if(queue->start_bird != HUMMINGBIRD)
     {
-        queue_exit_code = WRONG_START_HUMMINGBIRD + func_code;
+        queue_exit_code = QUEUE_WRONG_START_HUMMINGBIRD + func_code;
         return 0;
     }
 
     if(queue->start_bird != HUMMINGBIRD)
     {
-        queue_exit_code = WRONG_END_HUMMINGBIRD + func_code;
+        queue_exit_code = QUEUE_WRONG_END_HUMMINGBIRD + func_code;
         return 0;
     }
 
     if(queue->hash != HashSum(queue))
     {
-        queue_exit_code = WRONG_HASH_SUM + func_code;
+        queue_exit_code = QUEUE_WRONG_HASH_SUM + func_code;
         return 0;
     }
 
@@ -136,7 +136,7 @@ int QueueDumpFunction(Queue* queue, const char* func_name, int line_number, cons
 
     printf ("\n{\n");              
                                                 
-    printf (" size = %lu \n", queue->size);            
+    printf (" size = %lX \n", queue->size);            
                                                     
     printf (" hash_sum = %llX\n", queue->hash);       
                                                     
@@ -149,7 +149,7 @@ int QueueDumpFunction(Queue* queue, const char* func_name, int line_number, cons
         printf ("   ");      
         printf ("\t  ");
 
-        printf  ("[%lu] = %lg \n", i, node->data);
+        printf  ("[%ld] = %d \n", i, node->data);
         node = node->next;
         i += 1;
     }
@@ -171,7 +171,7 @@ unsigned long long HashSum(Queue* queue)
 
     while (node)
     {
-        hash += node->data;
+        hash += (uintptr_t) node->data;
         hash << sizeof(queue_type);
         node = node->next;
     }
@@ -184,7 +184,7 @@ void QueuePrintExitCode ()
     int func_code = queue_exit_code % 256;
     int err_code = queue_exit_code / 256 * 256;
     
-    if (err_code == FINE)
+    if (err_code == QUEUE_FINE)
     {
         printf ("No errors found\n");
         return;
@@ -192,19 +192,19 @@ void QueuePrintExitCode ()
 
     switch (err_code)
     {
-        case MEMORY_ALLOC_ERROR:
+        case QUEUE_MEMORY_ALLOC_ERROR:
             printf ("Memory allocation error in ");
             break;
 
-        case WRONG_START_HUMMINGBIRD:
+        case QUEUE_WRONG_START_HUMMINGBIRD:
             printf ("Changes in start hummingbird founded in ");
             break;
 
-        case WRONG_END_HUMMINGBIRD:
+        case QUEUE_WRONG_END_HUMMINGBIRD:
             printf ("Changes in end hummingbird founded in ");
             break;
 
-        case WRONG_HASH_SUM:
+        case QUEUE_WRONG_HASH_SUM:
             printf ("Mismacth of hash sum founded in ");
             break;
 
@@ -240,8 +240,8 @@ void QueuePrintExitCode ()
     return;
 }
 
-void UnitTest ()
-{
+void QueueUnitTest ()
+{   
     Queue queue1 = *QueueCtor();
     Queue queue2 = *QueueCtor();
     Queue queue3 = *QueueCtor();

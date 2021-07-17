@@ -23,6 +23,7 @@ extern int graph_exit_code;
 typedef struct GraphNode
 {
     int node_num;
+    int is_discovered;
     node_data_type data;
 } GraphNode;
 
@@ -41,16 +42,16 @@ typedef struct Graph
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-enum ExitCodes
+enum GraphExitCodes
 {
-    FINE                        = 0x001000,     //  If all is OK
-    MEMORY_ALLOC_ERROR          = 0x002000,     //  Error while allocation memory in functions calloc/realloc
-    FILEOPEN_ERROR              = 0x003000,     //  Error with file opening
+    GRAPH_FINE                        = 0x001000,     //  If all is OK
+    GRAPH_MEMORY_ALLOC_ERROR          = 0x002000,     //  Error while allocation memory in functions calloc/realloc
+    GRAPH_FILEOPEN_ERROR              = 0x003000,     //  Error with file opening
 };
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-enum FunctionNumbers
+enum GraphFunctionNumbers
 {
     GRAPH_CTOR_CODE = 1,         // Code of GraphCtor()
     GRAPH_NODE_CTOR_CODE = 2,    // Code of GraphNodeCtor()   
@@ -67,7 +68,7 @@ GraphNode* GraphNodeCtor (int, node_data_type);
 LinkedListNode* LLNodeCtor(GraphNode*);
 void AddEdge (Graph*, int, int);
 void GraphFromFile (Graph*, char*);
-void UnitTest ();
+void GraphUnitTest ();
 void GraphToDotFile (Graph*, char*);
 int GraphDumpFunction(Graph*, const char*, int, const char*, const char*);
 void GraphPrintExitCode ();

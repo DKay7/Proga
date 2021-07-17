@@ -1,9 +1,10 @@
 #include <malloc.h>
+#include "inttypes.h"
 
 #define and &&
 #define or ||
 
-typedef double queue_type;
+typedef int queue_type;
 typedef unsigned long long hummingbird_type;
 
 extern const hummingbird_type HUMMINGBIRD;
@@ -30,18 +31,18 @@ typedef struct Queue
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-enum ExitCodes
+enum QueueExitCodes
 {
-    FINE                        = 0x000000,     //  If all is OK
-    MEMORY_ALLOC_ERROR          = 0x080000,     //  Error while allocation memory in functions calloc/realloc
-    WRONG_START_HUMMINGBIRD     = 0x090000,     //  Changes in start-hummingbird
-    WRONG_END_HUMMINGBIRD       = 0x0A0000,     //  Changes in end-hummingbird
-    WRONG_HASH_SUM              = 0x0B0000      //  Mismath with recorded hash-sum
+    QUEUE_FINE                        = 0x000000,     //  If all is OK
+    QUEUE_MEMORY_ALLOC_ERROR          = 0x080000,     //  Error while allocation memory in functions calloc/realloc
+    QUEUE_WRONG_START_HUMMINGBIRD     = 0x090000,     //  Changes in start-hummingbird
+    QUEUE_WRONG_END_HUMMINGBIRD       = 0x0A0000,     //  Changes in end-hummingbird
+    QUEUE_WRONG_HASH_SUM              = 0x0B0000      //  Mismath with recorded hash-sum
 };
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-enum FunctionNumbers
+enum QueueFunctionNumbers
 {
     QUEUE_CTOR_CODE       = 1,    //Code of QueueCtor()
     QUEUE_PUSH_CODE       = 2,    //Code of QueuePush()
@@ -52,8 +53,8 @@ enum FunctionNumbers
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-void QueuePush(Queue*, double);
-double QueuePop(Queue*);
+void QueuePush(Queue*, queue_type);
+queue_type QueuePop(Queue*);
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxQueue
 Queue *QueueCtor();
@@ -62,6 +63,6 @@ unsigned long long HashSum(Queue*);
 void QueuePrintExitCode ();
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-void UnitTest ();
+void QueueUnitTest ();
 int QueueDumpFunction(Queue*, const char*, int, const char*, const char*);
 #define QueueDump(queue) QueueDumpFunction (queue, __PRETTY_FUNCTION__, __LINE__, __FILE__, #queue);
