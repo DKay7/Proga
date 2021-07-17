@@ -42,9 +42,8 @@ GraphNode* BreadthFirstSearch (Graph* graph, node_data_type target_data)
 
 }
 
-int BFSUnitTest ()
+int BFSUnitTest (const int graph_size, char* input_file, char* output_file1, char* output_file2)
 {
-    const int graph_size = 12;
     node_data_type data[graph_size];
 
     for (int i = 0; i < graph_size; i++)
@@ -54,17 +53,17 @@ int BFSUnitTest ()
 
     Graph* graph = GraphCtor (graph_size, data);
     
-    GraphFromFile (graph, "graph_test_file.txt");
+    GraphFromFile (graph, input_file);
 
     GraphDump (graph);
-    DrawGraph (graph, "result_grpah.dot");
+    DrawGraph (graph, output_file1);
 
     GraphNode* result_node = BreadthFirstSearch(graph, 6507);
 
     printf ("\n\n\nAFTER BFS\n");
     printf("[result node num %d] data: [%d]", result_node->node_num, result_node->data);
     GraphDump (graph);
-    DrawGraph (graph, "BFS_result_grpah.dot");
+    DrawGraph (graph,  output_file2);
 
     return 0;
 }
