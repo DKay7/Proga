@@ -10,4 +10,4 @@
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 GraphNode* BreadthFirstSearch (Graph*, node_data_type);
-int BFSUnitTest();
+int BFSUnitTest (const int, char*, char*, char*);
