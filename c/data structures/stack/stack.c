@@ -17,7 +17,7 @@ Stack *StackCtor(int size)
 
     if(stack == NULL or tmp_start == NULL)
     {
-        stack_exit_code = MEMORY_ALLOC_ERROR + STACK_CTOR_CODE;
+        stack_exit_code = STACK_MEMORY_ALLOC_ERROR + STACK_CTOR_CODE;
         return NULL;
     }
 
@@ -83,10 +83,11 @@ int StackIncrease(Stack *stack)
         tmp_start = (stack_type*) realloc(stack->start, 2 * stack->capacity * sizeof(Stack));
 
         if(tmp_start == NULL){
-            stack_exit_code = MEMORY_ALLOC_ERROR + STACK_INCREASE_CODE;
+            stack_exit_code = STACK_MEMORY_ALLOC_ERROR + STACK_INCREASE_CODE;
             return 0;
         }
 
+        stack->start = tmp_start;
         stack->capacity = 2*stack->capacity;
     }
 
@@ -110,7 +111,7 @@ int StackDecrease(Stack *stack)
 
         if(tmp_start == NULL)
         {
-            stack_exit_code = STACK_DECREASE_CODE + MEMORY_ALLOC_ERROR;
+            stack_exit_code = STACK_DECREASE_CODE + STACK_MEMORY_ALLOC_ERROR;
             return 0;
         } 
         
@@ -127,37 +128,37 @@ int StackValidity(Stack *stack, const int func_code)
 {
     if(stack->start == NULL)
     {
-        stack_exit_code = INCORRECT_STACK_POINTER + func_code;
+        stack_exit_code = STACK_INCORRECT_STACK_POINTER + func_code;
         return 0;
     }
 
     if(stack->start_bird != HUMMINGBIRD)
     {
-        stack_exit_code = WRONG_START_HUMMINGBIRD + func_code;
+        stack_exit_code = STACK_WRONG_START_HUMMINGBIRD + func_code;
         return 0;
     }
 
     if(stack->start_bird != HUMMINGBIRD)
     {
-        stack_exit_code = WRONG_END_HUMMINGBIRD + func_code;
+        stack_exit_code = STACK_WRONG_END_HUMMINGBIRD + func_code;
         return 0;
     }
 
     if(stack->pointer > stack->capacity or stack->pointer < 0)
     {
-        stack_exit_code = INCORRECT_STACK_POINTER + func_code;
+        stack_exit_code = STACK_INCORRECT_STACK_POINTER + func_code;
         return 0;
     }
 
     if(stack->capacity < 0)
     {
-        stack_exit_code = INCORRCT_STACK_CAPACITY + func_code;
+        stack_exit_code = STACK_INCORRCT_STACK_CAPACITY + func_code;
         return 0;
     }
 
     if(stack->hash != HashSum(stack))
     {
-        stack_exit_code = WRONG_HASH_SUM + func_code;
+        stack_exit_code = STACK_WRONG_HASH_SUM + func_code;
         return 0;
     }
 
@@ -190,9 +191,9 @@ int StackDumpFunction(Stack *stack, const char *func_name, int line_number, cons
 
     printf ("\n{\n");              
                                                 
-    printf (" size = %lu \n", stack->pointer);           
+    printf (" size = %u \n", stack->pointer);           
                                                     
-    printf (" capacity = %lu\n", stack->capacity);    
+    printf (" capacity = %u\n", stack->capacity);    
                                                     
     printf (" hash_sum = %llX\n", stack->hash);       
                                                     
@@ -207,7 +208,7 @@ int StackDumpFunction(Stack *stack, const char *func_name, int line_number, cons
         else                                        
             printf ("\t  ");
 
-        printf  ("[%lu] = %lg \n", i, *(stack->start + i)); 
+        printf  ("[%lu] = %d \n", i, *(stack->start + i)); 
     }
 
     printf ("   }\n}\n"); 
@@ -237,7 +238,7 @@ void StackPrintExitCode ()
     int func_code = stack_exit_code % 256;
     int err_code = stack_exit_code - func_code;
     
-    if (err_code == FINE)
+    if (err_code == STACK_FINE)
     {
         printf ("No errors founded\n");
         return;
@@ -245,31 +246,31 @@ void StackPrintExitCode ()
 
     switch (err_code)
     {
-        case MEMORY_ALLOC_ERROR:
+        case STACK_MEMORY_ALLOC_ERROR:
             printf ("Memory allocation error in ");
             break;
     
-        case INCORRECT_STACK_POINTER:
+        case STACK_INCORRECT_STACK_POINTER:
             printf ("Incorrect pointer to start of buffer founded in ");
             break;
 
-        case INCORRECT_STACK_SIZE:
+        case STACK_INCORRECT_STACK_SIZE:
             printf ("Stack size below zero or stack overdlow exception founded in ");
             break;
 
-        case INCORRCT_STACK_CAPACITY:
+        case STACK_INCORRCT_STACK_CAPACITY:
             printf ("Stack capacity below zeor  founded in ");
             break;
 
-        case WRONG_START_HUMMINGBIRD:
+        case STACK_WRONG_START_HUMMINGBIRD:
             printf ("Changes in start hummingbird founded in ");
             break;
 
-        case WRONG_END_HUMMINGBIRD:
+        case STACK_WRONG_END_HUMMINGBIRD:
             printf ("Changes in end hummingbird founded in ");
             break;
 
-        case WRONG_HASH_SUM:
+        case STACK_WRONG_HASH_SUM:
             printf ("Mismacth of hash sum founded in ");
             break;
 
@@ -313,7 +314,7 @@ void StackPrintExitCode ()
     return;
 }
 
-void UnitTest ()
+void StackUnitTest ()
 {
     Stack stack1 = *StackCtor(50);
     Stack stack2 = *StackCtor(50);
