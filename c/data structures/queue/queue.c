@@ -14,6 +14,12 @@ Queue* QueueCtor()
     
     Queue* queue = (Queue*) calloc(1, sizeof(Queue));
 
+    if(queue == NULL)
+    {
+        queue_exit_code = MEMORY_ALLOC_ERROR + QUEUE_CTOR_CODE;
+        return NULL;
+    }
+
     queue->start_bird = HUMMINGBIRD;
     queue->head = NULL;
     queue->tail = NULL;
