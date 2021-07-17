@@ -37,7 +37,7 @@ typedef struct LinkedListNode
 typedef struct Graph
 {   
     int size;
-    LinkedListNode** adjlist
+    LinkedListNode** adjlist;
 } Graph;
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
